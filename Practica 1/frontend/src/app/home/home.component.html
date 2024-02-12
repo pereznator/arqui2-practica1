@@ -1,0 +1,66 @@
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <span class="fs-4">Monitorio de Parqueo USAC</span>
+    </header>
+
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-bg-dark rounded-3">
+          <h2>Panel de Pacientes</h2>
+          <p>En el panel de pacientes puedes gestionar cualquier operación que involucre a los pacientes y su información almacenada en el sistema. Crear, listar, actualizar y eliminar (en un caso extremo) serán las acciones que el administrador tiene posibilidad de hacer en cualquier momento. </p>
+          <button class="btn btn-outline-light" type="button">Ir a Pacientes</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+          <h2>Panel de Citas</h2>
+          <p>En el panel de citas, el administrador es capaz de gestionar las citas de los pacientes, incluyendo crear, listar, actualizar y eliminar (en caso sea necesario) las citas de los paceintes.</p>
+          <!-- <button class="btn btn-outline-secondary" type="button">Ir a Citas</button> -->
+          Para acceder al panel de citas, ingresar a los detalles de un paciente.
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-lg">
+          <h6 class="fs-5">Citas para el día de hoy <span class="badge bg-primary">sdf</span></h6>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div class="row mt-3">
+            <div class="col-lg-4" *ngFor="let cita of citas">
+              <div class="card" style="width: 100%;">
+                <div class="card-body">
+                  <h5 class="card-title fs-4">{{ cita.nombre }} {{ cita.apellido }}</h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary fs-6">{{ cita.fecha_hora_cita | date: "medium" }}</h6>
+                  <ul>
+                    <li>
+                      <p class="card-text">Correo: {{ cita.correo }}</p>
+                    </li>
+                    <li>
+                      <p class="card-text">Telefono: {{ cita.telefono }}</p>
+                    </li>
+                  </ul>
+                  <a class="card-link" (click)="navegarACita(cita.paciente_id)">Ver Detalles</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+
+      <div class="alert alert-warning" *ngIf="citas.length === 0">
+        No hay citas pendientes hoy.
+      </div> -->
+    
+    </div>
+
+    <footer class="pt-3 mt-4 text-body-secondary border-top">
+      ClínicaFénix &copy; 2024
+    </footer>
+  </div>
+</main>
