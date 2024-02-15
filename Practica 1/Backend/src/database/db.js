@@ -4,8 +4,8 @@ var conexion = mysql.createConnection({
   host: "localhost",
   port: "3306",
   user: "root",
-  password: "Tigre",
-  database: "parqueo",
+  password: "root",
+  database: "arqui2-practica",
 });
 
 conexion.connect((err) => {

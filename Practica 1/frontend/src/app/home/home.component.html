@@ -1,4 +1,4 @@
-<main>
+<main >
   <div class="container py-4">
     <header class="pb-3 mb-4 border-bottom">
       <span class="fs-4">Monitorio de Parqueo USAC</span>
@@ -53,8 +53,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-
+              <tr *ngFor="let ingreso of entradasDataset">
+                <td>
+                  {{ingreso.fecha}}
+                </td>
+                <td>
+                  {{ingreso.hora}}
+                </td>
+                <td>
+                  {{ingreso.tipo}}
+                </td>
+                <td>
+                  {{ingreso.rol}}
+                </td>
               </tr>
             </tbody>
           </table>

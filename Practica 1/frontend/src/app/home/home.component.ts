@@ -1,25 +1,86 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
+import { AppService } from '../app.service';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [NgIf, NgFor],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  providers: [AppService]
 })
 export class HomeComponent implements OnInit {
   
+  loading: boolean = true;
   espaciosOcupadosChart: any;
   personasPorVehiculoChart: any;
   vehiculosPorRolChart: any;
 
-  constructor() {
+  espaciosOcupadosDataset: number[];
+  personasPorVehiculoDataset: number[];
+  vehiculosPorRolDataset: number[];
+  entradasDataset: any[];
+
+  constructor(private appService: AppService) {
     
   }
   
   ngOnInit(): void {
-    this.setCharts();
+    this.getEspaciosOcupadosData();
+    // this.setCharts();
+  }
+
+  getEspaciosOcupadosData(): void {
+    this.loading = true;
+    this.appService.dashboarEspaciosOcupados().subscribe(resp => {
+      console.log(resp);
+      this.espaciosOcupadosDataset = [resp[0].Ocupados, resp[0].Libres];
+      this.getPersonasPorVehiculoDataset();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  getPersonasPorVehiculoDataset(): void {
+    this.appService.dashboardPersonasPorVehiculo().subscribe(resp => {
+      console.log(resp);
+      this.personasPorVehiculoDataset = [resp[0].Personal, resp[0].Mediano, resp[0].Grande];
+      this.getVehiculosPorRolDataset();
+    }, err => {
+      console.log(err);
+    });
+  }
+  
+  getVehiculosPorRolDataset(): void {
+    this.appService.dashboardVehiculosPorRol().subscribe(resp => {
+      console.log(resp);
+      this.vehiculosPorRolDataset = [resp[0].Ajenos, resp[0].Estudiantes, resp[0].Trabajador, resp[0].Catedratico];
+      this.getEntradasDataset();
+    }, err => {
+      console.log(err);
+    });
+  }
+  
+  getEntradasDataset(): void {
+    this.appService.dashboardEntradas().subscribe(resp => {
+      console.log(resp);
+      this.entradasDataset = resp;
+      this.setCharts();
+    }, err => {
+      console.log(err);
+    });
+  }
+  
+  getSalidasDataset(): void {
+    this.appService.dashboardSalidas().subscribe(resp => {
+      console.log(resp);
+      this.entradasDataset = resp;
+      this.setCharts();
+    }, err => {
+      console.log(err);
+    });  
   }
 
   setCharts(): void {
@@ -32,7 +93,7 @@ export class HomeComponent implements OnInit {
         ],
         datasets: [{
           label: 'My First Dataset',
-          data: [174, 26],
+          data: this.espaciosOcupadosDataset,
           backgroundColor: [
             'rgb(146, 80, 14)',
             'rgb(239, 129, 19)',
@@ -55,7 +116,7 @@ export class HomeComponent implements OnInit {
         ],
         datasets: [{
           label: 'My First Dataset',
-          data: [300, 50, 100],
+          data: this.personasPorVehiculoDataset,
           backgroundColor: [
             'rgb(17, 191, 242)',
             'rgb(136, 218, 38)',
@@ -79,7 +140,7 @@ export class HomeComponent implements OnInit {
         ],
         datasets: [{
           label: 'My First Dataset',
-          data: [40, 300, 50, 100],
+          data: this.vehiculosPorRolDataset,
           backgroundColor: [
             'rgb(216, 216, 216)',
             'rgb(248, 98, 78)',
@@ -93,5 +154,6 @@ export class HomeComponent implements OnInit {
         color: "white"
       }
     });
+    this.loading = false;
   }
 }
