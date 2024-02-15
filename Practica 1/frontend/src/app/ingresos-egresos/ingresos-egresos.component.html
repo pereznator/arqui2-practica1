@@ -1,1 +1,38 @@
-<p>ingresos-egresos works!</p>
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-lg-10">
+      <h1>Ingresos y Egresos</h1>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-1">
+      <small>
+        Fecha Inicio:
+      </small>
+    </div>
+    <div class="col-md-2">
+      <input type="datetime-local" class="form-control form-control-sm" [(ngModel)]="startDate">
+    </div>
+    <div class="col-md-1">
+      <small>
+        Fecha Final:
+      </small>
+    </div>
+    <div class="col-md-2">
+      <input type="datetime-local" class="form-control form-control-sm" [(ngModel)]="endDate">
+    </div>
+    <div class="col-md-auto">
+      <button class="btn btn-primary btn-sm" (click)="buscar()">Buscar</button>
+    </div>
+    <div class="col-md-auto">
+      <button class="btn btn-secondary btn-sm" (click)="reset()">Reset</button>
+    </div>
+  </div>
+  <div class="chart-container mt-2">
+    <canvas id="chart"></canvas>    
+  </div>
+</div>
+
+<!-- <ng-container *ngIf="!loading">
+</ng-container> -->

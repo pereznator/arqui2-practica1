@@ -1,18 +1,21 @@
 import { NgIf } from '@angular/common';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Chart } from "chart.js/auto";
 
 @Component({
   selector: 'app-vehiculo-rol',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, FormsModule],
   templateUrl: './vehiculo-rol.component.html',
   styleUrl: './vehiculo-rol.component.scss'
 })
-export class VehiculoRolComponent implements OnInit, AfterViewInit {
+export class VehiculoRolComponent implements OnInit {
   // loading: boolean = true;
   public chart: any;
-  
+  startDate: string;
+  endDate: string;
+
   constructor() {
   }
   
@@ -20,7 +23,7 @@ export class VehiculoRolComponent implements OnInit, AfterViewInit {
     this.chart = new Chart("chart", { 
       type: 'bar', //this denotes tha type of chart
       data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13', '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ], 
+        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13', '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17'], 
          datasets: [
           {
             label: "Sales",
@@ -38,12 +41,13 @@ export class VehiculoRolComponent implements OnInit, AfterViewInit {
         aspectRatio: 2.5
       }
     });
-    console.log("on init");
-    // this.loading = false;
   }
 
-  ngAfterViewInit(): void {
-    // this.loading = false;
-    console.log("on after init");
+  buscar(): void {
+
+  }
+
+  reset(): void {
+    
   }
 }
