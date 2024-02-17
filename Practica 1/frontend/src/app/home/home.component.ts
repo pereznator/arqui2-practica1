@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { AppService } from '../app.service';
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers: [AppService]
@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   personasPorVehiculoDataset: number[];
   vehiculosPorRolDataset: number[];
   entradasDataset: any[];
+  salidasDataset: any[];
 
   constructor(private appService: AppService) {
     
@@ -67,7 +68,7 @@ export class HomeComponent implements OnInit {
     this.appService.dashboardEntradas().subscribe(resp => {
       console.log(resp);
       this.entradasDataset = resp;
-      this.setCharts();
+      this.getSalidasDataset();
     }, err => {
       console.log(err);
     });
@@ -76,7 +77,7 @@ export class HomeComponent implements OnInit {
   getSalidasDataset(): void {
     this.appService.dashboardSalidas().subscribe(resp => {
       console.log(resp);
-      this.entradasDataset = resp;
+      this.salidasDataset = resp;
       this.setCharts();
     }, err => {
       console.log(err);
@@ -92,7 +93,7 @@ export class HomeComponent implements OnInit {
           'Espacios Disponibles'
         ],
         datasets: [{
-          label: 'My First Dataset',
+          label: 'Espacios Disponibles y Ocupados',
           data: this.espaciosOcupadosDataset,
           backgroundColor: [
             'rgb(146, 80, 14)',
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit {
       },
       options: {
         color: "white"
-      }
+      },
     });
     this.personasPorVehiculoChart = new Chart("personasPorVehiculoChart", {
       type: "doughnut",
@@ -115,7 +116,7 @@ export class HomeComponent implements OnInit {
           'Grande'
         ],
         datasets: [{
-          label: 'My First Dataset',
+          label: 'Personas por Vehiculo',
           data: this.personasPorVehiculoDataset,
           backgroundColor: [
             'rgb(17, 191, 242)',
@@ -139,7 +140,7 @@ export class HomeComponent implements OnInit {
           'Catedratico'
         ],
         datasets: [{
-          label: 'My First Dataset',
+          label: 'Vehiculo por Rol',
           data: this.vehiculosPorRolDataset,
           backgroundColor: [
             'rgb(216, 216, 216)',

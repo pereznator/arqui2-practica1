@@ -55,7 +55,7 @@
             <tbody>
               <tr *ngFor="let ingreso of entradasDataset">
                 <td>
-                  {{ingreso.fecha}}
+                  {{ingreso.fecha | date: "dd/MM/YYYY"}}
                 </td>
                 <td>
                   {{ingreso.hora}}
@@ -81,8 +81,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-
+              <tr *ngFor="let egreso of salidasDataset">
+                <td>
+                  {{egreso.fecha | date: "dd/MM/YYYY"}}
+                </td>
+                <td>
+                  {{egreso.hora}}
+                </td>
+                <td>
+                  {{egreso.tipo}}
+                </td>
+                <td>
+                  {{egreso.rol}}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -92,7 +103,7 @@
     </div>
 
     <footer class="pt-3 mt-4 text-body-secondary border-top">
-      ClínicaFénix &copy; 2024
+      Arqui2 &copy; 2024
     </footer>
   </div>
 </main>
