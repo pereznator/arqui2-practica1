@@ -2,47 +2,70 @@ import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chart } from 'chart.js';
+import { Subscription } from 'rxjs';
+import { AppService } from '../app.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ingresos-egresos',
   standalone: true,
   imports: [NgIf, FormsModule],
   templateUrl: './ingresos-egresos.component.html',
-  styleUrl: './ingresos-egresos.component.scss'
+  styleUrl: './ingresos-egresos.component.scss',
+  providers: [AppService]
 })
 export class IngresosEgresosComponent implements OnInit {
   chart: any;
   startDate: string;
   endDate: string;
 
-  constructor() {}
+  timerSubscription: Subscription;
+
+  constructor(
+    private readonly appService: AppService
+  ) {}
 
   ngOnInit(): void {
+    this.buscar();
     this.chart = new Chart("chart", { 
-      type: 'bar', //this denotes tha type of chart
+      type: 'line', //this denotes tha type of chart
       data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13', '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17'], 
-         datasets: [
+        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+        datasets: [
           {
-            label: "Sales",
-            data: [467,576, 572, 79, 92, 574, 573, 576],
-            backgroundColor: 'red'
-          },
-          {
-            label: "Profit",
-            data: [542, 542, 536, 327, 17, 0, 538, 541],
-            backgroundColor: 'pink'
-          }  
+            label: 'Dataset',
+            data: [-100, -80, -60, -40, -20, 0],
+            borderColor: "rgba(231, 76, 60, 1)",
+            backgroundColor: "rgba(231, 76, 60, 0.5)",
+            pointStyle: 'circle',
+            pointRadius: 10,
+            pointHoverRadius: 15
+          }
         ]
       },
       options: {
-        aspectRatio: 2.5
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            // text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+          }
+        }
       }
     });
   }
 
   buscar(): void {
-
+    const params = {
+      fecha_inicial: this.startDate ?? moment.utc().subtract(1, "d").startOf("day").toISOString(),
+      fecha_final: this.endDate ?? moment.utc().subtract(1, "d").endOf("day").toISOString()
+    };
+    console.log(params);
+    this.appService.historialDeIngresosYEgresos(params).subscribe(resp => {
+      console.log(resp);
+    }, err => {
+      console.log(err);
+    })
   }
 
   reset(): void {

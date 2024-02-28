@@ -52,7 +52,7 @@
                 <th>Rol Vehiculo</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="!loading">
               <tr *ngFor="let ingreso of entradasDataset">
                 <td>
                   {{ingreso.fecha | date: "dd/MM/YYYY"}}
@@ -80,7 +80,7 @@
                 <th>Rol Vehiculo</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="!loading">
               <tr *ngFor="let egreso of salidasDataset">
                 <td>
                   {{egreso.fecha | date: "dd/MM/YYYY"}}
