@@ -62,15 +62,15 @@ export class AppService {
   }
 
   historialDeIngresosYEgresos(params: any): Observable<any> {
-    return this.request(RequestMethod.GET, "/historial_ingresosEgresos", {}, params);
+    return this.request(RequestMethod.POST, "/historial_ingresosEgresos",params);
   }
   
   historialDeVehiculosPorRol(params: any): Observable<any> {
-    return this.request(RequestMethod.GET, "/historial_VehiducloRol", {}, params);
+    return this.request(RequestMethod.POST, "/historial_VehiducloRol", params);
   }
 
   historialDePersonasPorDia(params: any): Observable<any> {
-    return this.request(RequestMethod.GET, "/historial_Personas", {}, params);
+    return this.request(RequestMethod.POST, "/historial_Personas", params);
   }
 
 }

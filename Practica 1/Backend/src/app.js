@@ -1,6 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
-//const arduino = require("./conexion/arduino")
+// const arduino = require("./conexion/arduino")
 const db  = require('./database/db')
 const routelist = require("./router/router")
 
@@ -10,7 +10,7 @@ app.use(cors())
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' })); 
 
-//arduino.parser
+// arduino.parser
 db.conexion
 
 app.use("/", routelist)

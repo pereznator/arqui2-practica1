@@ -1,53 +1,100 @@
 import { NgIf } from '@angular/common';
-import {Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chart } from "chart.js/auto";
+import { Observable, Subscription, interval, switchMap } from 'rxjs';
+import { AppService } from '../app.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-vehiculo-rol',
   standalone: true,
   imports: [NgIf, FormsModule],
   templateUrl: './vehiculo-rol.component.html',
-  styleUrl: './vehiculo-rol.component.scss'
+  styleUrl: './vehiculo-rol.component.scss',
+  providers: [AppService]
 })
-export class VehiculoRolComponent implements OnInit {
+export class VehiculoRolComponent implements OnInit, OnDestroy {
   // loading: boolean = true;
-  public chart: any;
+  public chart: Chart<"bar">;
   startDate: string;
   endDate: string;
+  timerSubscription: Subscription;
+  showAlert = false;
 
-  constructor() {
-  }
+  constructor(
+    private appService: AppService
+  ) {}
   
   ngOnInit(): void {
-    this.chart = new Chart("chart", { 
-      type: 'bar', //this denotes tha type of chart
-      data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13', '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17'], 
-         datasets: [
-          {
-            label: "Sales",
-            data: [467,576, 572, 79, 92, 574, 573, 576],
-            backgroundColor: 'blue'
-          },
-          {
-            label: "Profit",
-            data: [542, 542, 536, 327, 17, 0, 538, 541],
-            backgroundColor: 'limegreen'
-          }  
-        ]
-      },
-      options: {
-        aspectRatio: 2.5
-      }
-    });
+    this.buscar().subscribe();
+    this.timerSubscription = interval(5000)
+    .pipe(
+      switchMap(() => this.buscar())
+    ).subscribe();
+    
   }
 
-  buscar(): void {
+  ngOnDestroy(): void {
+    this.timerSubscription.unsubscribe();
+  }
 
+  buscar(): Observable<any> {
+    const params = {
+      fecha_inicial: this.startDate ? moment.utc(this.startDate).subtract(1, "d").startOf("day").format("YYYY-MM-DD HH:mm:ss") : moment.utc().subtract(1, "d").startOf("day").format("YYYY-MM-DD HH:mm:ss"),
+      fecha_final: this.endDate ? moment.utc(this.endDate).subtract(1, "d").endOf("day").format("YYYY-MM-DD HH:mm:ss") : moment.utc().subtract(1, "d").endOf("day").format("YYYY-MM-DD HH:mm:ss")
+    };
+    return this.appService.historialDeVehiculosPorRol(params).pipe(
+      switchMap(resp => {
+        console.log("RESP", resp);
+        this.showAlert = false;
+        if (this.chart) {
+          this.chart.destroy();
+        }
+
+        if (resp.length === 0) {
+          this.showAlert = true;
+        }
+
+        this.chart = new Chart("chart", { 
+          type: 'bar', //this denotes tha type of chart
+          data: {// values on X-Axis
+            labels: resp.map(registro => registro.fecha), 
+             datasets: [
+              {
+                label: "Trabajador",
+                data: resp.map(registro => registro.data.trabajador),
+                backgroundColor: 'blue'
+              },
+              {
+                label: "Catedratico",
+                data: resp.map(registro => registro.data['catedrático']),
+                backgroundColor: 'yellow'
+              }, 
+              {
+                label: "Estudiante",
+                data: resp.map(registro => registro.data.estudiante),
+                backgroundColor: 'red'
+              }, 
+              {
+                label: "Otro",
+                data: resp.map(registro => registro.data.ajeno),
+                backgroundColor: 'gray'
+              }, 
+            ]
+          },
+          options: {
+            aspectRatio: 2.5
+          }
+        });
+        return resp;
+      })
+    );
   }
 
   reset(): void {
-    
+    this.startDate = null;
+    this.endDate = null;
+    this.buscar();
   }
 }

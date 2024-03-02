@@ -10,7 +10,7 @@ router
     .get("/vehiculoRol",dashboardPrincipal.getVehiculoRol)
     .get("/ingresosDia",dashboardPrincipal.getIngresodeldia)
     .get("/egresosDia",dashboardPrincipal.getEgresosdedia)
-    .get("/historial_ingresosEgresos",dashboardHistorial.getHistoriaIngresoEgresos)
-    .get("/historial_VehiducloRol",dashboardHistorial.getHistoriaVehiculoRol)
-    .get("/historial_Personas",dashboardHistorial.getHistoriaIngresosPersonas)
+    .post("/historial_ingresosEgresos",dashboardHistorial.getHistoriaIngresoEgresos)
+    .post("/historial_VehiducloRol",dashboardHistorial.getHistoriaVehiculoRol)
+    .post("/historial_Personas",dashboardHistorial.getHistoriaIngresosPersonas)
 module.exports = router

@@ -12,7 +12,7 @@
       </small>
     </div>
     <div class="col-md-2">
-      <input type="datetime-local" class="form-control form-control-sm" [(ngModel)]="startDate">
+      <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate">
     </div>
     <div class="col-md-1">
       <small>
@@ -20,7 +20,7 @@
       </small>
     </div>
     <div class="col-md-2">
-      <input type="datetime-local" class="form-control form-control-sm" [(ngModel)]="endDate">
+      <input type="date" class="form-control form-control-sm" [(ngModel)]="endDate">
     </div>
     <div class="col-md-auto">
       <button class="btn btn-primary btn-sm" (click)="buscar()">Buscar</button>
@@ -30,6 +30,9 @@
     </div>
   </div>
   <div class="chart-container mt-2">
+    <div class="alert alert-warning" *ngIf="showAlert">
+      No se encontraron registros entre {{startDate}} y {{endDate}}
+    </div>
     <canvas id="chart"></canvas>    
   </div>
 </div>

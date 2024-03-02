@@ -30,6 +30,9 @@
     </div>
   </div>
   <div class="chart-container mt-2">
+    <div class="alert alert-warning" *ngIf="showAlert">
+      No se encontraron registros entre {{startDate}} y {{endDate}}
+    </div>
     <canvas id="chart"></canvas>    
   </div>
 </div>
